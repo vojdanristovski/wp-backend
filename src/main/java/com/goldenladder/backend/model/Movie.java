@@ -2,10 +2,9 @@ package com.goldenladder.backend.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -48,6 +47,12 @@ public class Movie {
 
     @Column(name="votes")
     private Integer voteCount;
+
+    @OneToMany(mappedBy = "movie")
+    private Set<Review> reviews;
+
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ActorMovie> actors;
 
     public Movie() {
 

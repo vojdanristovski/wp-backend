@@ -90,7 +90,7 @@ public class UserController {
     }
 
 
-    private String getUsername() {
+    public static String getUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             return ((UserDetails) principal).getUsername();

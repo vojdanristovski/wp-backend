@@ -2,10 +2,8 @@ package com.goldenladder.backend.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -26,6 +24,9 @@ public class Actor {
 
     @Column(name = "date_of_death")
     private String deathDate;
+
+    @OneToMany(mappedBy = "actor",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ActorMovie> movies;
 
     public Actor() {
     }
