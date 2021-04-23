@@ -1,8 +1,12 @@
 package com.goldenladder.backend.service;
 
+import com.goldenladder.backend.model.Movie;
 import com.goldenladder.backend.model.Review;
+import com.goldenladder.backend.model.User;
+
+import java.util.Optional;
 
 public interface ReviewService {
 
-    Review createReview(Review review);
+    Optional<Review> createReview(Review review, Movie movie, User user);
 }

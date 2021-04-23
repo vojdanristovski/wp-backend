@@ -1,14 +1,15 @@
 package com.goldenladder.backend.web.rest;
 
-import com.goldenladder.backend.model.Movie;
-import com.goldenladder.backend.model.Review;
-import com.goldenladder.backend.model.User;
+import com.goldenladder.backend.model.*;
 import com.goldenladder.backend.model.exception.NotFoundException;
+import com.goldenladder.backend.service.ActorService;
 import com.goldenladder.backend.service.MovieService;
 import com.goldenladder.backend.service.ReviewService;
 import com.goldenladder.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/m")
@@ -17,11 +18,13 @@ public class MovieController {
     private final MovieService movieService;
     private final UserService userService;
     private final ReviewService reviewService;
+    private final ActorService actorService;
 
-    public MovieController(MovieService movieService, UserService userService, ReviewService reviewService) {
+    public MovieController(MovieService movieService, UserService userService, ReviewService reviewService, ActorService actorService) {
         this.movieService = movieService;
         this.userService = userService;
         this.reviewService = reviewService;
+        this.actorService = actorService;
     }
 
     @GetMapping("/{id}")
@@ -32,21 +35,62 @@ public class MovieController {
     }
 
     @PostMapping("/{id}/rate")
-    public void rateMovie(@PathVariable String id,
+    public ResponseEntity<Review> rateMovie(@PathVariable String id,
                           @RequestParam Integer rating,
                           @RequestParam String comment)
     {
         String username = UserController.getUsername(); // getting the username
 
-        User u = userService.loadUserByUsername(username); // getting the user
+        Movie movie = this.movieService.findById(id)
+                .orElseThrow(NotFoundException::new);
 
-        Movie movie = movieService.findById(id).orElseThrow(NotFoundException::new); // getting the movie
+        User user = this.userService.loadUserByUsername(username);
 
-        Review review = new Review(u,movie,rating,comment); //making new review
+        Review review = new Review(user,movie,rating,comment); //making new review
 
-        this.reviewService.createReview(review); //adding to db
+       return this.reviewService.createReview(review,movie,user)
+               .map(review1 -> ResponseEntity.ok().body(review1))
+               .orElseGet(()->ResponseEntity.notFound().build());
+    }
 
-        movie.getReviews().add(review);
-        u.getRated().add(review);
+    @GetMapping("/g/{genre}")
+    public List<Movie> findByGenre(@PathVariable String genre)
+    {
+        return this.movieService.findByGenre(genre);
+    }
+
+    @GetMapping("/topRated")
+    public List<Movie> getTopRated()
+    {
+        return this.movieService.findTop10Rated();
+    }
+
+    @GetMapping("/newest")
+    public List<Movie> getNewest()
+    {
+        return this.movieService.findNewest();
+    }
+
+    @GetMapping("/{id}/crew")
+    public List<Actor> getCrew(@PathVariable String id)
+    {
+        Movie m = this.movieService.findById(id)
+                .orElseThrow(NotFoundException::new);
+        List<ActorMovie> actorMovie = m.getActors();
+
+       return this.actorService.findActorsByMovie(actorMovie);
+    }
+
+    @GetMapping("/{id}/watchlist")
+    public void addToWatchlist(@PathVariable String id)
+    {
+        String username = UserController.getUsername();
+
+        User u = this.userService.loadUserByUsername(username);
+
+        Movie m = this.movieService.findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        u.getWatchlist().add(m);
     }
 }

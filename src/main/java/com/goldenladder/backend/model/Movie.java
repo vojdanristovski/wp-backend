@@ -67,4 +67,14 @@ public class Movie {
         this.productionCompany = productionCompany;
         this.description = description;
     }
+
+    public void updateRating(Integer newRating)
+    {
+        voteCount++;
+
+        avgVote = (this.avgVote * (voteCount - 1) + newRating) /voteCount;
+
+    }
+
+
 }
