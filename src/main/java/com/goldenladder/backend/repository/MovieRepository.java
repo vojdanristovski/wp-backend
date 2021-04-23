@@ -23,7 +23,7 @@ public interface MovieRepository extends JpaRepository<Movie,String> {
     @Query("SELECT m FROM Movie m ORDER BY m.datePublished DESC")
     List<Movie> findNewestMovies(Pageable pageable);
 
-    @Query("SELECT m FROM Movie m ORDER BY m.avgVote DESC")
+    @Query("SELECT m FROM Movie m WHERE m.country = 'USA' ORDER BY m.avgVote DESC")
     List<Movie> findTopRated(Pageable pageable);
 
     @Query("SELECT m FROM Movie m ORDER BY m.voteCount DESC")
