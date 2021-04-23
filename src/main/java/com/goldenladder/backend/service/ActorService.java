@@ -11,5 +11,5 @@ public interface ActorService {
 
     Optional<Actor> findById(String id);
 
-    List<Actor> findActorsByMovie(List<ActorMovie> movies);
+//    List<Actor> findActorsByMovie(List<ActorMovie> movies);
 }

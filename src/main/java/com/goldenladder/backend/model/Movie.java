@@ -1,5 +1,7 @@
 package com.goldenladder.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -49,9 +51,11 @@ public class Movie {
     private Integer voteCount;
 
     @OneToMany(mappedBy = "movie")
+
     private Set<Review> reviews;
 
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<ActorMovie> actors;
 
     public Movie() {

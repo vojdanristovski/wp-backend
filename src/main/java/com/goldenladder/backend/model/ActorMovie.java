@@ -1,5 +1,6 @@
 package com.goldenladder.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,10 +16,12 @@ public class ActorMovie {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("movieId")
+    @JsonBackReference
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("actorId")
+    @JsonBackReference
     private Actor actor;
 
     @Column(name="category")

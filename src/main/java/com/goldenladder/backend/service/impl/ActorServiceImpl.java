@@ -22,10 +22,10 @@ public class ActorServiceImpl implements ActorService {
         return this.actorRepository.findById(id);
     }
 
-    @Override
-    public List<Actor> findActorsByMovie(List<ActorMovie> movies) {
-        return this.actorRepository.findAllByMovies(movies);
-    }
+//    @Override
+//    public List<Actor> findActorsByMovie(List<ActorMovie> movies) {
+//        return this.actorRepository.findAllByMovies(movies);
+//    }
 
 
 }

@@ -56,7 +56,7 @@ public class MovieController {
     @GetMapping("/g/{genre}")
     public List<Movie> findByGenre(@PathVariable String genre)
     {
-        return this.movieService.findByGenre(genre);
+        return this.movieService.findTopByGenre(genre);
     }
 
     @GetMapping("/topRated")
@@ -71,15 +71,11 @@ public class MovieController {
         return this.movieService.findNewest();
     }
 
-    @GetMapping("/{id}/crew")
-    public List<Actor> getCrew(@PathVariable String id)
-    {
-        Movie m = this.movieService.findById(id)
-                .orElseThrow(NotFoundException::new);
-        List<ActorMovie> actorMovie = m.getActors();
-
-       return this.actorService.findActorsByMovie(actorMovie);
+    @GetMapping("/popular")
+    public List<Movie> getPopular(){
+        return this.movieService.findTopPopular();
     }
+
 
     @GetMapping("/{id}/watchlist")
     public void addToWatchlist(@PathVariable String id)

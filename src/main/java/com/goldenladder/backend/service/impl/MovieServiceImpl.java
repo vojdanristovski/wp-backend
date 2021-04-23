@@ -43,7 +43,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> findByGenre(String genre) {
-        return this.movieRepository.findAllByGenreContains(genre);
+    public List<Movie> findTopByGenre(String genre) {
+        return this.movieRepository.findAllByGenreSorted(genre,PageRequest.of(1,10));
+    }
+
+    @Override
+    public List<Movie> findTopPopular() {
+        return this.movieRepository.findTopPopularity(PageRequest.of(0,10));
     }
 }

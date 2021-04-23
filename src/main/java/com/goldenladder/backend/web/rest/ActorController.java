@@ -25,6 +25,6 @@ public class ActorController {
                 .map(actor -> ResponseEntity.ok().body(actor))
                 .orElseGet(()->ResponseEntity.notFound().build());
     }
-    
+
 
 }

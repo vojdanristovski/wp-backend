@@ -2,6 +2,7 @@ package com.goldenladder.backend.repository;
 
 import com.goldenladder.backend.model.Actor;
 import com.goldenladder.backend.model.Movie;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,13 +17,15 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie,String> {
 
 
-    List<Movie> findAllByGenreContains(String genre);
+    @Query("SELECT m FROM Movie m WHERE m.genre LIKE %:genre% ORDER BY m.voteCount DESC")
+    List<Movie> findAllByGenreSorted(String genre,Pageable pageable);
 
-    @Query("SELECT m FROM Movie m ORDER BY m.datePublished")
+    @Query("SELECT m FROM Movie m ORDER BY m.datePublished DESC")
     List<Movie> findNewestMovies(Pageable pageable);
 
     @Query("SELECT m FROM Movie m ORDER BY m.avgVote DESC")
     List<Movie> findTopRated(Pageable pageable);
 
-
+    @Query("SELECT m FROM Movie m ORDER BY m.voteCount DESC")
+    List<Movie> findTopPopularity(Pageable pageable);
 }
