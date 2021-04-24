@@ -65,7 +65,20 @@ public class UserService implements UserDetailsService {
         userRepository.save(update);
     }
 
-
+    @Transactional
+    public void follow(String username1, String username2) throws UsernameNotFoundException {
+        User user1 = this.loadUserByUsername(username1);
+        User user2 = this.loadUserByUsername(username2);
+        user1.getFollowing().add(user2);
+        this.userRepository.save(user1);
+    }
+    @Transactional
+    public void unfollow(String username1, String username2) throws UsernameNotFoundException {
+        User user1 = this.loadUserByUsername(username1);
+        User user2 = this.loadUserByUsername(username2);
+        user1.getFollowing().remove(user2);
+        this.userRepository.save(user1);
+    }
 
 
 }

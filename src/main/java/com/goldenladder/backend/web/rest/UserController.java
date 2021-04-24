@@ -18,11 +18,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired
     private UserService userService;
-
 
     @GetMapping("/{username}")
     ResponseEntity<User> details(@PathVariable String username) {
@@ -34,12 +34,31 @@ public class UserController {
         }
     }
 
-
     @PutMapping("/{username}/edit")
     ResponseEntity<User> editUser(@PathVariable String username, @RequestBody UserDto userDto) {
         try {
             User user = this.userService.updateUser(userDto);
             return ResponseEntity.ok().body(user);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{username}/follow/{username2}")
+    ResponseEntity<User> followUser(@PathVariable String username, @PathVariable String username2) {
+        try {
+            this.userService.follow(username, username2);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{username}/unfollow/{username2}")
+    ResponseEntity<User> unfollowUser(@PathVariable String username, @PathVariable String username2) {
+        try {
+            this.userService.unfollow(username, username2);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -89,7 +108,6 @@ public class UserController {
         }
     }
 
-
     public static String getUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
@@ -98,6 +116,5 @@ public class UserController {
             return principal.toString();
         }
     }
-
 
 }

@@ -8,7 +8,7 @@ public class JwtResponse {
     private String type = "Bearer";
     private String username;
     private String email;
-    private Role role;
+    private final Role role;
 
     public JwtResponse(String accessToken, String username, String email, Role role) {
         this.token = accessToken;

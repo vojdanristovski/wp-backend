@@ -1,18 +1,10 @@
 package com.goldenladder.backend.web.rest;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
 import com.goldenladder.backend.config.jwt.JwtResponse;
 import com.goldenladder.backend.config.jwt.JwtUtils;
 import com.goldenladder.backend.model.Role;
 import com.goldenladder.backend.model.User;
 import com.goldenladder.backend.model.dto.UserDto;
-import com.goldenladder.backend.repository.UserRepository;
 import com.goldenladder.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +14,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -62,20 +51,6 @@ public class AuthController {
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 role));
-//        try {
-//            User user = this.userService.login(userDto.getUsername(), userDto.getPassword());
-//            List<User> set = user.getFollowing();
-//            return ResponseEntity.ok().body(new LogedInUserDto(user,set));
-//        } catch (InvalidUserCredentialsException ex) {
-//            return ResponseEntity.badRequest().build();
-//        }
-
-//        this.userService.save(userDto);
-//        return ResponseEntity.ok().build();
-//    } catch (Exception e) {
-//        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//        return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409
-//    }
     }
 
     @PostMapping("/register")
