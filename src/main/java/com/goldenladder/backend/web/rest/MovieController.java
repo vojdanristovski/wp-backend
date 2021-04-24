@@ -37,17 +37,16 @@ public class MovieController {
 
     @PostMapping("/{id}/rate")
     public ResponseEntity<Review> rateMovie(@PathVariable String id,
-                          @RequestParam Integer rating,
-                          @RequestParam String comment)
+                          @RequestParam Integer rating)
     {
-        String username = UserController.getUsername(); // getting the username
+        String username = "user"; // getting the username
 
         Movie movie = this.movieService.findById(id)
-                .orElseThrow(NotFoundException::new);
+                    .orElseThrow(NotFoundException::new);
 
         User user = this.userService.loadUserByUsername(username);
 
-        Review review = new Review(user,movie,rating,comment); //making new review
+        Review review = new Review(user,movie,rating,""); //making new review
 
        return this.reviewService.createReview(review,movie,user)
                .map(review1 -> ResponseEntity.ok().body(review1))

@@ -51,7 +51,7 @@ public class Movie {
     private Integer voteCount;
 
     @OneToMany(mappedBy = "movie")
-
+    @JsonManagedReference
     private Set<Review> reviews;
 
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,orphanRemoval = true)

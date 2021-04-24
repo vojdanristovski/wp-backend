@@ -1,6 +1,7 @@
 package com.goldenladder.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -53,6 +54,7 @@ public class User implements UserDetails {
     private Set<Movie> faved;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private Set<Review> rated;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -100,4 +102,16 @@ public class User implements UserDetails {
         return isEnabled;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        User user = (User) o;
+//        return isAccountNonExpired == user.isAccountNonExpired && isAccountNonLocked == user.isAccountNonLocked && isCredentialsNonExpired == user.isCredentialsNonExpired && isEnabled == user.isEnabled && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(birthday, user.birthday) && role == user.role && Objects.equals(followers, user.followers) && Objects.equals(following, user.following) && Objects.equals(faved, user.faved) && Objects.equals(rated, user.rated) && Objects.equals(watchlist, user.watchlist);
+//    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, email);
+    }
 }
