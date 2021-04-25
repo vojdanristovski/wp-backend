@@ -18,7 +18,7 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie,String> {
 
 
-    @Query("SELECT m FROM Movie m WHERE m.genre = :genre ORDER BY m.voteCount DESC")
+    @Query("SELECT m FROM Movie m WHERE m.genre LIKE %:genre% ORDER BY m.voteCount DESC")
     List<Movie> findAllByGenreSorted(String genre,Pageable pageable);
 
     @Query("SELECT m FROM Movie m WHERE m.datePublished is not null  ORDER BY m.datePublished DESC")
