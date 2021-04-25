@@ -8,11 +8,10 @@ import java.util.Objects;
 
 @Entity
 @Data
-@Table(name="actor_movie")
+@Table(name="actor_movie_fix")
 public class ActorMovie {
     @EmbeddedId
-    private ActorMovieKey pk;
-
+    private ActorMovieKey id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("movieId")
@@ -34,7 +33,7 @@ public class ActorMovie {
         this.movie = movie;
         this.actor = actor;
         this.category = category;
-        this.pk = new ActorMovieKey(movie.getMovieId(),actor.getActorId());
+        this.id = new ActorMovieKey(movie.getMovieId(),actor.getActorId());
     }
 
     @Override
