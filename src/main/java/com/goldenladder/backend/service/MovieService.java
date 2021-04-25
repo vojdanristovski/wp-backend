@@ -17,4 +17,6 @@ public interface MovieService {
     List<Movie> findTopByGenre(String genre);
 
     List<Movie> findTopPopular();
+
+    List<Movie> search(String searchText);
 }

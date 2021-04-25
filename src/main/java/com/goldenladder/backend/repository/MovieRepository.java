@@ -2,6 +2,7 @@ package com.goldenladder.backend.repository;
 
 import com.goldenladder.backend.model.Actor;
 import com.goldenladder.backend.model.Movie;
+import com.goldenladder.backend.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,5 +29,8 @@ public interface MovieRepository extends JpaRepository<Movie,String> {
 
     @Query("SELECT m FROM Movie m ORDER BY m.voteCount DESC")
     List<Movie> findTopPopularity(Pageable pageable);
+
+    List<Movie> findAllByTitleContaining(String text);
+
 
 }

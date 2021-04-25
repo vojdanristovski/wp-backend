@@ -27,5 +27,10 @@ public class ActorServiceImpl implements ActorService {
 //        return this.actorRepository.findAllByMovies(movies);
 //    }
 
+    @Override
+    public List<Actor> search(String searchText) {
+        return this.actorRepository.findAllByNameContaining(searchText);
+    }
+
 
 }

@@ -89,4 +89,5 @@ public class MovieController {
 
         u.getWatchlist().add(m);
     }
+
 }
