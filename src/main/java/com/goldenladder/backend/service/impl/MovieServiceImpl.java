@@ -1,5 +1,6 @@
 package com.goldenladder.backend.service.impl;
 
+import com.goldenladder.backend.model.Actor;
 import com.goldenladder.backend.model.Movie;
 import com.goldenladder.backend.repository.MovieRepository;
 import com.goldenladder.backend.service.MovieService;
@@ -50,5 +51,10 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<Movie> findTopPopular() {
         return this.movieRepository.findTopPopularity(PageRequest.of(0,10));
+    }
+
+    @Override
+    public List<Movie> search(String searchText) {
+        return this.movieRepository.findAllByTitleContaining(searchText);
     }
 }

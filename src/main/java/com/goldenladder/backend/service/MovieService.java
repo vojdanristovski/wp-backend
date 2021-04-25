@@ -18,5 +18,5 @@ public interface MovieService {
 
     List<Movie> findTopPopular();
 
-
+    List<Movie> search(String searchText);
 }

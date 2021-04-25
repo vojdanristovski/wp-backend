@@ -9,4 +9,6 @@ public interface ActorRepository extends JpaRepository<Actor,String> {
 
 //    List<Actor> findAllByMovies(List<ActorMovie> movies);
 
+    List<Actor> findAllByNameContaining(String text);
+
 }

@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -86,6 +87,11 @@ public class UserService implements UserDetailsService {
         this.userRepository.save(user1);
     }
 
+
+    public List<User> search(String searchText) {
+        return this.userRepository.findAllByUsernameContaining(searchText);
+    }
+
     public Optional<User> addToWatchList(String username,String movieId){
         User user1= this.loadUserByUsername(username);
         Movie movie= this.movieRepository.findById(movieId).orElseThrow(NotFoundException::new);
@@ -115,6 +121,7 @@ public class UserService implements UserDetailsService {
         user1.getFaved().remove(movie);
         return  Optional.of(this.userRepository.save(user1));
     }
+
 
 
 }

@@ -1,9 +1,12 @@
 package com.goldenladder.backend.web.rest;
 
 import com.goldenladder.backend.model.Actor;
+import com.goldenladder.backend.model.User;
 import com.goldenladder.backend.service.ActorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/a")
