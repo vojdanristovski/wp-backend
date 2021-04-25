@@ -39,7 +39,7 @@ public class MovieController {
     public ResponseEntity<Review> rateMovie(@PathVariable String id,
                           @RequestParam Integer rating)
     {
-        String username = "user"; // getting the username
+        String username = UserController.getUsername(); // getting the username
 
         Movie movie = this.movieService.findById(id)
                     .orElseThrow(NotFoundException::new);
@@ -89,4 +89,17 @@ public class MovieController {
 
         u.getWatchlist().add(m);
     }
+    @GetMapping("/{id}/favourites")
+    public void addToFavouriteList(@PathVariable String id)
+    {
+        String username = UserController.getUsername();
+
+        User u = this.userService.loadUserByUsername(username);
+
+        Movie m = this.movieService.findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        u.getFaved().add(m);
+    }
+
 }
