@@ -30,7 +30,7 @@ public interface MovieRepository extends JpaRepository<Movie,String> {
     @Query("SELECT m FROM Movie m WHERE m.voteCount is not null ORDER BY m.voteCount DESC")
     List<Movie> findTopPopularity(Pageable pageable);
 
-    List<Movie> findAllByTitleContaining(String text);
+    List<Movie> findAllByTitleLike(String text);
 
 
 }

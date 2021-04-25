@@ -28,7 +28,7 @@ public class ActorServiceImpl implements ActorService {
 
     @Override
     public List<Actor> search(String searchText) {
-        return this.actorRepository.findAllByNameContaining(searchText);
+        return this.actorRepository.findAllByNameLike(searchText);
     }
 
 

@@ -55,6 +55,6 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> search(String searchText) {
-        return this.movieRepository.findAllByTitleContaining(searchText);
+        return this.movieRepository.findAllByTitleLike(searchText);
     }
 }

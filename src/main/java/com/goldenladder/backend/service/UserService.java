@@ -89,7 +89,7 @@ public class UserService implements UserDetailsService {
 
 
     public List<User> search(String searchText) {
-        return this.userRepository.findAllByUsernameContaining(searchText);
+        return this.userRepository.findAllByUsernameLike(searchText);
     }
 
     public Optional<User> addToWatchList(String username,String movieId){
