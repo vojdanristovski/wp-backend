@@ -1,6 +1,7 @@
 package com.goldenladder.backend.web.rest;
 
 import com.goldenladder.backend.model.Movie;
+import com.goldenladder.backend.model.Review;
 import com.goldenladder.backend.model.User;
 import com.goldenladder.backend.model.dto.UserDto;
 import com.goldenladder.backend.model.exception.InvalidArgumentsException;

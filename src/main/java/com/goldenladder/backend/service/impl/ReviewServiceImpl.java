@@ -35,4 +35,13 @@ public class ReviewServiceImpl implements ReviewService {
 
         return Optional.of(this.reviewRepository.save(review));
     }
+
+    @Override
+    public Optional<Review> getRating(User user,Movie movie)
+    {
+        return movie.getReviews().stream()
+                .filter(review -> review.getUser().getUsername().equals(user.getUsername()) &&
+                        review.getMovie().getMovieId().equals(movie.getMovieId()))
+                .findFirst();
+    }
 }

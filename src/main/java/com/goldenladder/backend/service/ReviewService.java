@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ReviewService {
 
     Optional<Review> createReview(Review review, Movie movie, User user);
+    Optional<Review> getRating(User user,Movie movie);
 }
