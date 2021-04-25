@@ -64,6 +64,7 @@ public class UserController {
         }
     }
 
+
     @GetMapping("/{username}/favourites")
     ResponseEntity<Set<Movie>> getFavourites(@PathVariable String username) {
         try {

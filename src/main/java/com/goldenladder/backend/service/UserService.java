@@ -1,12 +1,15 @@
 package com.goldenladder.backend.service;
 
 import com.goldenladder.backend.model.DateCustom;
+import com.goldenladder.backend.model.Movie;
 import com.goldenladder.backend.model.Role;
 import com.goldenladder.backend.model.User;
 import com.goldenladder.backend.model.dto.UserDto;
 import com.goldenladder.backend.model.exception.InvalidArgumentsException;
+import com.goldenladder.backend.model.exception.NotFoundException;
 import com.goldenladder.backend.model.exception.PasswordsDoNotMatchException;
 import com.goldenladder.backend.model.exception.UsernameAlreadyExistsException;
+import com.goldenladder.backend.repository.MovieRepository;
 import com.goldenladder.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +23,9 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    @Autowired
+    private MovieRepository movieRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -81,8 +87,41 @@ public class UserService implements UserDetailsService {
         this.userRepository.save(user1);
     }
 
+
     public List<User> search(String searchText) {
         return this.userRepository.findAllByUsernameContaining(searchText);
     }
+
+    public Optional<User> addToWatchList(String username,String movieId){
+        User user1= this.loadUserByUsername(username);
+        Movie movie= this.movieRepository.findById(movieId).orElseThrow(NotFoundException::new);
+
+        user1.getWatchlist().add(movie);
+        return  Optional.of(this.userRepository.save(user1));
+    }
+
+    public Optional<User> deleteFromWatchList(String username,String movieId){
+        User user1= this.loadUserByUsername(username);
+        Movie movie= this.movieRepository.findById(movieId).orElseThrow(NotFoundException::new);
+
+        user1.getWatchlist().remove(movie);
+        return  Optional.of(this.userRepository.save(user1));
+    }
+    public Optional<User> addToFavorite(String username,String movieId){
+        User user1= this.loadUserByUsername(username);
+        Movie movie= this.movieRepository.findById(movieId).orElseThrow(NotFoundException::new);
+
+        user1.getFaved().add(movie);
+        return  Optional.of(this.userRepository.save(user1));
+    }
+    public Optional<User> deleteFromFavorites(String username,String movieId){
+        User user1= this.loadUserByUsername(username);
+        Movie movie= this.movieRepository.findById(movieId).orElseThrow(NotFoundException::new);
+
+        user1.getFaved().remove(movie);
+        return  Optional.of(this.userRepository.save(user1));
+    }
+
+
 
 }

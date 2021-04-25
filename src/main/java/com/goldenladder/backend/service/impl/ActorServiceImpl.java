@@ -1,12 +1,10 @@
 package com.goldenladder.backend.service.impl;
 
 import com.goldenladder.backend.model.Actor;
-import com.goldenladder.backend.model.ActorMovie;
 import com.goldenladder.backend.repository.ActorRepository;
 import com.goldenladder.backend.service.ActorService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

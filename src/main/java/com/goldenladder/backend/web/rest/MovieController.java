@@ -39,14 +39,14 @@ public class MovieController {
     public ResponseEntity<Review> rateMovie(@PathVariable String id,
                           @RequestParam Integer rating)
     {
-        String username = "user"; // getting the username
+        String username = UserController.getUsername(); // getting the username
 
         Movie movie = this.movieService.findById(id)
                     .orElseThrow(NotFoundException::new);
 
         User user = this.userService.loadUserByUsername(username);
 
-        Review review = new Review(user,movie,rating,""); //making new review
+        Review review = new Review(user,movie,rating*2,""); //making new review
 
        return this.reviewService.createReview(review,movie,user)
                .map(review1 -> ResponseEntity.ok().body(review1))
@@ -78,16 +78,55 @@ public class MovieController {
 
 
     @GetMapping("/{id}/watchlist")
-    public void addToWatchlist(@PathVariable String id)
+    public ResponseEntity<User> addToWatchlist(@PathVariable String id)
     {
         String username = UserController.getUsername();
 
-        User u = this.userService.loadUserByUsername(username);
+       return this.userService.addToWatchList(username,id)
+               .map(user->
+                   ResponseEntity.ok().body(user)
+               )
+               .orElseGet(()->ResponseEntity.notFound().build());
 
-        Movie m = this.movieService.findById(id)
-                .orElseThrow(NotFoundException::new);
+    }
+    @GetMapping("/{id}/removewatchlist")
+    public ResponseEntity<User> deleteFromWatchList(@PathVariable String id)
+    {
+        String username = UserController.getUsername();
 
-        u.getWatchlist().add(m);
+        return this.userService.deleteFromWatchList(username,id)
+                .map(user->
+                        ResponseEntity.ok().body(user)
+                )
+                .orElseGet(()->ResponseEntity.notFound().build());
+
+    }
+
+
+    @GetMapping("/{id}/favorites")
+    public ResponseEntity<User> addToFavoriteList(@PathVariable String id)
+    {
+        String username = UserController.getUsername();
+
+        return this.userService.addToFavorite(username,id)
+                .map(user->
+                        ResponseEntity.ok().body(user)
+                )
+                .orElseGet(()->ResponseEntity.notFound().build());
+
+
+    }
+
+    @GetMapping("/{id}/removefavorites")
+    public ResponseEntity<User> deleteFromFavorites(@PathVariable String id)
+    {
+        String username = UserController.getUsername();
+
+        return this.userService.deleteFromFavorites(username,id)
+                .map(user->
+                        ResponseEntity.ok().body(user)
+                )
+                .orElseGet(()->ResponseEntity.notFound().build());
     }
 
 }

@@ -3,7 +3,7 @@ package com.goldenladder.backend.service;
 import com.goldenladder.backend.model.Actor;
 import com.goldenladder.backend.model.Movie;
 
-import java.util.List;
+
 import java.util.Optional;
 
 public interface ActorService {
