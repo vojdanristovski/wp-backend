@@ -3,7 +3,9 @@ package com.goldenladder.backend.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,7 +15,8 @@ import java.util.*;
 
 @Table(name = "`user`")
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler",
         "password",
@@ -47,20 +50,14 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "following_username"))
     private List<User> following;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "favorites",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "SeriesAndMovies_id"))
+    @ManyToMany
     private Set<Movie> faved;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private Set<Review> rated;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "watchlist",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "SeriesAndMovies_id"))
+    @ManyToMany
     private Set<Movie> watchlist;
 
     public User(String username, String password, String email, LocalDateTime birthday, Role role) {

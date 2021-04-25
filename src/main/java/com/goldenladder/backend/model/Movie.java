@@ -2,12 +2,15 @@ package com.goldenladder.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="movies")
 public class Movie {
@@ -53,13 +56,12 @@ public class Movie {
     @JsonManagedReference
     private Set<Review> reviews;
 
-//    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,orphanRemoval = true)
-//    @JsonManagedReference
-//    private List<ActorMovieBad> actors;
 
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
     private List<ActorMovie> actorMovies;
+
+
 
     public Movie() {
 
