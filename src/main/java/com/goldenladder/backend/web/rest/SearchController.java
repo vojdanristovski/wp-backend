@@ -44,7 +44,7 @@ public class SearchController {
                     .map(actor -> new SearchTypeReturn(actor.getActorId(),actor.getName(),"actor"))
                     .collect(Collectors.toList());
             List<SearchTypeReturn> searchTypeReturnList3= movieList.stream()
-                    .map(movie -> new SearchTypeReturn(movie.getMovieId(),movie.getTitle(),"movie"))
+                    .map(movie -> new SearchTypeReturn(movie.getMovieId(),movie.getOriginalTitle(),"movie"))
                     .collect(Collectors.toList());
             searchTypeReturnList1.addAll(searchTypeReturnList2);
             searchTypeReturnList1.addAll(searchTypeReturnList3);
