@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "https://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -60,6 +60,54 @@ public class AuthController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409
+        }
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        try {
+            SecurityContextHolder.getContext().setAuthentication(null);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // 409
+        }
+    }
+
+    @PostMapping("/login/facebook")
+    public ResponseEntity<?> authenticateFacebookUser(@Valid @RequestBody UserDto userDto) {
+
+        try {
+            User user = this.userService.loadUserByUsername(userDto.getId());
+            try{
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(userDto.getId(), userDto.getUsername()));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+            catch (Exception er){
+                System.out.println("--------------------------------");
+            }
+            String jwt = jwtUtils.generateJwtTokenForFacebookUser(userDto);
+            return ResponseEntity.ok(new JwtResponse(jwt,
+                    userDto.getId(),
+                    "",
+                    user.getRole()));
+        } catch (Exception e) {
+            // user not found
+            try {
+                // save in two tables
+                User user = this.userService.saveFacebookUser(userDto);
+                String jwt = jwtUtils.generateJwtTokenForFacebookUser(userDto);
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(userDto.getId(), userDto.getUsername()));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                return ResponseEntity.ok(new JwtResponse(jwt,
+                        userDto.getId(),
+                        "",
+                        user.getRole()));
+            } catch (Exception ex) {
+                // user not found
+                return ResponseEntity.notFound().build();
+            }
         }
     }
 }

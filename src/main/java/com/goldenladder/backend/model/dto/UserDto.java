@@ -18,11 +18,18 @@ public class UserDto {
 
     private String birthday;
 
+    private String id;
+
     public UserDto(String username, String password, String email, String birthday) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.birthday = birthday;
         this.repeatPassword=null;
+    }
+
+    public UserDto(String username, String id) {
+        this.username = username;
+        this.id = id;
     }
 }

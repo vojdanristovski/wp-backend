@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/a")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://localhost:3000")
 public class ActorController {
     private final ActorService actorService;
 

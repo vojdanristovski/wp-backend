@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/search")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://localhost:3000")
 public class SearchController {
 
     @Autowired

@@ -2,6 +2,7 @@ package com.goldenladder.backend.config.jwt;
 
 
 import com.goldenladder.backend.model.User;
+import com.goldenladder.backend.model.dto.UserDto;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,16 @@ public class JwtUtils {
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + 864000000))
+                .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
+                .compact();
+    }
+
+    public String generateJwtTokenForFacebookUser(UserDto userDto) {
+
+        return Jwts.builder()
+                .setSubject((userDto.getId()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + 864000000))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())

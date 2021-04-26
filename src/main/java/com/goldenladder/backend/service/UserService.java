@@ -1,14 +1,12 @@
 package com.goldenladder.backend.service;
 
-import com.goldenladder.backend.model.DateCustom;
-import com.goldenladder.backend.model.Movie;
-import com.goldenladder.backend.model.Role;
-import com.goldenladder.backend.model.User;
+import com.goldenladder.backend.model.*;
 import com.goldenladder.backend.model.dto.UserDto;
 import com.goldenladder.backend.model.exception.InvalidArgumentsException;
 import com.goldenladder.backend.model.exception.NotFoundException;
 import com.goldenladder.backend.model.exception.PasswordsDoNotMatchException;
 import com.goldenladder.backend.model.exception.UsernameAlreadyExistsException;
+import com.goldenladder.backend.repository.FacebookUserRepository;
 import com.goldenladder.backend.repository.MovieRepository;
 import com.goldenladder.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +27,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FacebookUserRepository facebookUserRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -123,5 +124,20 @@ public class UserService implements UserDetailsService {
     }
 
 
+    @Transactional
+    public User saveFacebookUser(UserDto dto) {
+        if (dto.getUsername()==null || dto.getId()==null)
+            throw new InvalidArgumentsException();
+        // not saved
+        if (this.userRepository.findByUsername(dto.getId()).isPresent()) {
+            throw new UsernameAlreadyExistsException(dto.getId());
+        }
+        User user = new User();
+        user.setUsername(dto.getId());
+        user.setPassword(passwordEncoder.encode(user.getUsername()));
+        user.setRole(Role.ROLE_USER);
+        this.facebookUserRepository.save(new FacebookUser(dto.getId(),dto.getUsername()));
 
+        return this.userRepository.save(user);
+    }
 }
